@@ -1,0 +1,39 @@
+// schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  host        User?    @relation(fields: [hostId], references: [id])
+  hostId      String?
+  price       Float?
+  guests      Int?
+  bedrooms    Int?
+  bathrooms   Int?
+  country     String?
+  photos      String[]
+  
+  @@map(name: "listings")
+}
+
+model User {
+  id        String    @id @default(uuid())
+  firstName String?   @map(name: "first_name")
+  lastName  String?   @map(name: "last_name")
+  email     String?   @unique
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @updatedAt @map(name: "updated_at")
+  posts     Listing[]
+
+  @@map(name: "users")
+}
