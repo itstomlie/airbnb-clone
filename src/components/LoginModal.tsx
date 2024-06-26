@@ -3,7 +3,7 @@ import { useSearchParams, usePathname } from "next/navigation";
 import Link from "next/link";
 import { Mail, Smartphone, X } from "lucide-react";
 import { Input } from "./ui/input";
-import Form from "@/components/Form";
+import LoginForm from "@/components/LoginForm";
 import { createClient } from "@/utils/supabase/client";
 
 import SocialLogo from "social-logos";
@@ -16,16 +16,16 @@ function Modal() {
 
   const [useEmail, setUseEmail] = useState(true);
 
-  async function signInWithGoogle() {
-    const supabase = createClient();
+  // async function signInWithGoogle() {
+  //   const supabase = createClient();
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: "google",
-      // options: {
-      //     // redirectTo: getURL() // function to get your URL
-      // }
-    });
-  }
+  //   const { data, error } = await supabase.auth.signInWithOAuth({
+  //     provider: "google",
+  //     // options: {
+  //     //     // redirectTo: getURL() // function to get your URL
+  //     // }
+  //   });
+  // }
 
   return (
     <>
@@ -43,14 +43,14 @@ function Modal() {
               <p className="text-start text-2xl font-medium pb-5">
                 Welcome to Airbnb
               </p>
-              <Form useEmail={useEmail} />
+              <LoginForm useEmail={useEmail} />
             </div>
             <hr className="mx-5" />
             <div className="p-5 space-y-3">
               <button
                 onClick={() => {
                   console.log("google");
-                  signInWithGoogle();
+                  // signInWithGoogle();
                 }}
                 className="w-full border p-2 rounded-lg border-black flex justify-between hover:bg-slate-50"
               >

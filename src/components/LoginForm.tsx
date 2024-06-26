@@ -23,15 +23,24 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { getCountryDataList, getEmojiFlag } from "countries-list";
+import { login } from "@/actions";
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }).optional,
-  phone: z.string().min(2, {
-    message: "phone must be at least 2 characters.",
-  }).optional,
-  email: z.string().email().optional,
+  username: z
+    .string()
+    .min(2, {
+      message: "Username must be at least 2 characters.",
+    })
+    .optional(),
+  phone: z
+    .string()
+    .min(2, {
+      message: "phone must be at least 2 characters.",
+    })
+    .optional(),
+  email: z.string().email().optional(),
+  password: z.string().optional(),
+  countryCode: z.string().optional(),
 });
 
 export default function LoginForm({ useEmail }: { useEmail: boolean }) {
@@ -40,6 +49,8 @@ export default function LoginForm({ useEmail }: { useEmail: boolean }) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
+      phone: "",
+      email: "",
     },
   });
 
@@ -53,7 +64,7 @@ export default function LoginForm({ useEmail }: { useEmail: boolean }) {
   const countries = getCountryDataList();
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+      <form action={login} className="space-y-3">
         {useEmail ? (
           <>
             <FormField
@@ -65,6 +76,19 @@ export default function LoginForm({ useEmail }: { useEmail: boolean }) {
 
                   <FormControl>
                     <Input placeholder="itsTomLie@gmail.com" {...field} />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+
+                  <FormControl>
+                    <Input {...field} type="password" />
                   </FormControl>
                 </FormItem>
               )}
