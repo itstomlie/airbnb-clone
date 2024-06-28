@@ -17,7 +17,7 @@ const Navbar = () => {
         />
       </Link>
 
-      <div className="flex justify-evenly items-center border shadow-xl rounded-full p-1 gap-x-5">
+      <div className="flex justify-evenly items-center border shadow-md rounded-full p-1 gap-x-5">
         <div className="flex gap-x-5 pl-5 text-sm">
           <p className="truncate">Anywhere</p>
           <span className="opacity-10">|</span>

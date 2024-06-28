@@ -1,8 +1,8 @@
+import { getListings } from "@/actions";
 import CategoryFilter from "@/components/CategoryFilter";
-import Listings from "@/components/Listings/Listings";
-import Image from "next/image";
+import Listings from "@/components/listing/Listings";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <CategoryFilter />

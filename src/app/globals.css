@@ -16,8 +16,8 @@
     --primary: #ff385c;
     --primary-foreground: 210 40% 98%;
 
-    --secondary: hsl(0, 0%, 67%);
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: #f7f7f7;
+    --secondary-foreground: hsl(0, 0%, 67%);
 
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -80,5 +80,17 @@
   }
   .container::-webkit-scrollbar {
     display: none; /* Safari and Chrome */
+  }
+
+  /* Chrome, Safari, Edge, Opera */
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }

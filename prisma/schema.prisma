@@ -12,16 +12,24 @@ datasource db {
 
 model Listing {
   id          String   @id @default(cuid())
-  name        String
+  name        String?
   description String?
+  category    String?
   host        User?    @relation(fields: [hostId], references: [id])
   hostId      String?
   price       Float?
   guests      Int?
   bedrooms    Int?
+  beds        Int?
   bathrooms   Int?
+  location    Float[]
   country     String?
-  photos      String[]
+  images      String[]
+  hasCategory Boolean @default(false)
+  hasDescription Boolean @default(false)
+  hasLocation Boolean @default(false)
+  createdAt DateTime  @default(now()) @map(name: "created_at")
+  updatedAt DateTime  @updatedAt @map(name: "updated_at")
   
   @@map(name: "listings")
 }

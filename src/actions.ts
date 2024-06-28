@@ -11,16 +11,40 @@ export async function login(formData: FormData) {
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
-  const data = {
+  const form = {
     email: formData.get("email") as string,
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signInWithPassword(data);
+  const user = await prisma.user.findFirst({
+    where: {
+      email: form.email,
+    },
+  });
+
+  if (!user) {
+    const { data, error } = await supabase.auth.signUp(form);
+
+    if (error) {
+      console.log(error);
+      redirect("/error");
+    }
+
+    await prisma.user.create({
+      data: {
+        id: data.user?.id,
+        email: data.user?.email,
+      },
+    });
+
+    revalidatePath("/", "layout");
+    redirect("/");
+  }
+
+  const { error } = await supabase.auth.signInWithPassword(form);
 
   if (error) {
     console.log(error);
-
     redirect("/error");
   }
 
@@ -28,32 +52,120 @@ export async function login(formData: FormData) {
   redirect("/");
 }
 
-export async function signup(formData: FormData) {
-  const supabase = createClient();
+export async function getListings() {
+  const listings = await prisma.listing.findMany();
 
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const data = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
-
-  const { error } = await supabase.auth.signUp(data);
-
-  if (error) {
-    console.log(error);
-    redirect("/error");
-  }
-
-  revalidatePath("/", "layout");
-  redirect("/");
+  return listings;
 }
 
 export async function createListing(userId: string) {
-  const home = await prisma.listing.findFirst({
+  let listing;
+
+  listing = await prisma.listing.findFirst({
     where: {
       hostId: userId,
     },
+    select: {
+      id: true,
+      hasCategory: true,
+      hasDescription: true,
+      hasLocation: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
-  console.log("🚀 ~ createListingWithUserId ~ home:", home);
+
+  if (!listing) {
+    listing = await prisma.listing.create({
+      data: {
+        hostId: userId,
+      },
+    });
+
+    redirect(`/become-a-host/${listing.id}/structure`);
+  }
+
+  if (!listing.hasCategory) {
+    redirect(`/become-a-host/${listing.id}/structure`);
+  } else if (listing.hasCategory && !listing.hasDescription) {
+    redirect(`/become-a-host/${listing.id}/description`);
+  } else if (
+    listing.hasCategory &&
+    listing.hasDescription &&
+    !listing.hasLocation
+  ) {
+    redirect(`/become-a-host/${listing.id}/location`);
+  } else {
+    await prisma.listing.create({
+      data: {
+        hostId: userId,
+      },
+    });
+
+    redirect(`/become-a-host/${listing.id}/structure`);
+  }
+}
+
+export async function inputCategory(formData: FormData) {
+  const category = formData.get("category") as string;
+  const listingId = formData.get("listingId") as string;
+
+  const listing = await prisma.listing.update({
+    where: { id: listingId },
+    data: { category, hasCategory: true },
+  });
+
+  redirect(`/become-a-host/${listing.id}/location`);
+}
+
+export async function inputCountry(formData: FormData) {
+  const country = formData.get("country") as string;
+  const listingId = formData.get("listingId") as string;
+
+  const listing = await prisma.listing.update({
+    where: { id: listingId },
+    data: { country, hasLocation: true },
+  });
+
+  redirect(`/become-a-host/${listing.id}/description`);
+}
+
+export async function inputDescription({
+  name,
+  description,
+  price,
+  guests,
+  bedrooms,
+  beds,
+  bathrooms,
+  listingId,
+  images,
+}: {
+  name: string;
+  description: string;
+  price: number;
+  guests: number;
+  bedrooms: number;
+  beds: number;
+  bathrooms: number;
+  listingId: string;
+  images: string[];
+}) {
+  await prisma.listing.update({
+    where: { id: listingId },
+    data: {
+      name,
+      description,
+      price: Number(price),
+      guests: Number(guests),
+      bedrooms: Number(bedrooms),
+      beds: Number(beds),
+      bathrooms: Number(bathrooms),
+      images,
+      hasDescription: true,
+    },
+  });
+
+  redirect(`/`);
 }
