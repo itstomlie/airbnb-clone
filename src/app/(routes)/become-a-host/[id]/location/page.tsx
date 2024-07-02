@@ -8,6 +8,7 @@ import React, { useState } from "react";
 
 const LocationPage = () => {
   const [country, setCountry] = useState("");
+  const [coordinates, setCoordinates] = useState();
   const { id: listingId } = useParams();
 
   return (
@@ -25,9 +26,13 @@ const LocationPage = () => {
 
         <form action={inputCountry} className="relative">
           <input type="hidden" name="country" value={country} />
+          <input type="hidden" name="coordinates" value={coordinates} />
           <input type="hidden" name="listingId" value={listingId} />
 
-          <MapboxCountry setCountry={setCountry} />
+          <MapboxCountry
+            setCountry={setCountry}
+            setParentCoordinates={setCoordinates}
+          />
           <BottomBar />
         </form>
       </div>

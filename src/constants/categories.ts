@@ -16,7 +16,7 @@ export const categories: Category[] = [
     id: "icons",
   },
   {
-    name: "amazingPools",
+    name: "amazing-pools",
     title: "Amazing Pools",
     imageUrl:
       "https://a0.muscache.com/pictures/3fb523a0-b622-4368-8142-b5e03df7549b.jpg",
@@ -24,7 +24,7 @@ export const categories: Category[] = [
     id: "amazing-pools",
   },
   {
-    name: "tinyHomes",
+    name: "tiny-homes",
     title: "Tiny Homes",
     imageUrl:
       "https://a0.muscache.com/pictures/3271df99-f071-4ecf-9128-eb2d2b1f50f0.jpg",
@@ -40,7 +40,7 @@ export const categories: Category[] = [
     id: "countryside",
   },
   {
-    name: "beachFront",
+    name: "beach-front",
     title: "Beach Front",
     imageUrl:
       "https://a0.muscache.com/pictures/bcd1adc0-5cee-4d7a-85ec-f6730b0f8d0c.jpg",
@@ -56,7 +56,7 @@ export const categories: Category[] = [
     id: "cabins",
   },
   {
-    name: "treeHouses",
+    name: "tree-houses",
     title: "Tree Houses",
     imageUrl:
       "https://a0.muscache.com/pictures/4d4a4eba-c7e4-43eb-9ce2-95e1d200d10e.jpg",
@@ -64,7 +64,7 @@ export const categories: Category[] = [
     id: "tree-houses",
   },
   {
-    name: "luxuryVillas",
+    name: "luxury-villas",
     title: "Luxury Villas",
     imageUrl:
       "https://a0.muscache.com/pictures/78ba8486-6ba6-4a43-a56d-f556189193da.jpg",
@@ -72,7 +72,7 @@ export const categories: Category[] = [
     id: "luxury-villas",
   },
   {
-    name: "historicHomes",
+    name: "historic-homes",
     title: "Historic Homes",
     imageUrl:
       "https://a0.muscache.com/pictures/33dd714a-7b4a-4654-aaf0-f58ea887a688.jpg",
@@ -80,7 +80,7 @@ export const categories: Category[] = [
     id: "historic-homes",
   },
   {
-    name: "skiResorts",
+    name: "ski-resorts",
     title: "Ski Resorts",
     imageUrl:
       "https://a0.muscache.com/pictures/757deeaa-c78f-488f-992b-d3b1ecc06fc9.jpg",

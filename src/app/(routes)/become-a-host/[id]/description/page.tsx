@@ -54,7 +54,6 @@ const DescriptionPage = () => {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("🚀 ~ handleFileChange ~ e.target:", e.target);
     setSelectedFiles(e.target.files);
   };
 
@@ -63,7 +62,6 @@ const DescriptionPage = () => {
 
     const uploadedImageUrls: string[] = [];
 
-    console.log("🚀 ~ handleSubmit ~ selectedFiles:", selectedFiles);
     if (selectedFiles) {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
@@ -133,10 +131,11 @@ const DescriptionPage = () => {
             <div>
               <Label htmlFor="price">Price</Label>
               <Input
-                type="number"
+                type="text"
                 id="price"
                 placeholder="Price in USD"
                 value={price}
+                inputMode="numeric"
                 onChange={(e) => setPrice(Number(e.target.value))}
               />
             </div>

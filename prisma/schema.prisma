@@ -22,12 +22,12 @@ model Listing {
   bedrooms    Int?
   beds        Int?
   bathrooms   Int?
-  location    Float[]
+  coordinates String[]
   country     String?
   images      String[]
   hasCategory Boolean @default(false)
   hasDescription Boolean @default(false)
-  hasLocation Boolean @default(false)
+  hasCoordinates Boolean @default(false)
   createdAt DateTime  @default(now()) @map(name: "created_at")
   updatedAt DateTime  @updatedAt @map(name: "updated_at")
   

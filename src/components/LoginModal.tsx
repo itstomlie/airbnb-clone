@@ -45,7 +45,7 @@ function Modal() {
               </p>
               <LoginForm useEmail={useEmail} />
             </div>
-            <hr className="mx-5" />
+            <hr className="px-5" />
             <div className="p-5 space-y-3">
               <button
                 onClick={() => {

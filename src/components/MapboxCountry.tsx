@@ -46,9 +46,13 @@ type country = {
 
 interface MapboxCountryProps {
   setCountry: React.Dispatch<React.SetStateAction<string>>;
+  setParentCoordinates: React.Dispatch<React.SetStateAction<undefined>>;
 }
 
-const MapboxCountry: React.FC<MapboxCountryProps> = ({ setCountry }) => {
+const MapboxCountry: React.FC<MapboxCountryProps> = ({
+  setCountry,
+  setParentCoordinates,
+}) => {
   const Map = ReactMapboxGl({
     accessToken:
       "pk.eyJ1IjoidG9tdGhlZGV2ZWxvcGVyMTEiLCJhIjoiY2wwMTFrMTBiMHB3MTNwcXBpZHl2eGZ1eSJ9.Vou5dmwCnq0bIIBYPasAeg",
@@ -71,6 +75,7 @@ const MapboxCountry: React.FC<MapboxCountryProps> = ({ setCountry }) => {
             coordinates[1] += 4; // To lower the map because of the select bar
 
             setCoordinates(coordinates);
+            setParentCoordinates(coordinates);
           }}
         >
           <SelectTrigger className="w-[80%] absolute z-20 mt-2">

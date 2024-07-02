@@ -52,15 +52,17 @@ export async function login(formData: FormData) {
   redirect("/");
 }
 
-export async function getListings() {
-  const listings = await prisma.listing.findMany();
+export async function getListings(search: string | null) {
+  const listings = await prisma.listing.findMany({
+    where: { category: search || undefined },
+    orderBy: { createdAt: "desc" },
+  });
 
   return listings;
 }
 
 export async function createListing(userId: string) {
   let listing;
-
   listing = await prisma.listing.findFirst({
     where: {
       hostId: userId,
@@ -69,7 +71,7 @@ export async function createListing(userId: string) {
       id: true,
       hasCategory: true,
       hasDescription: true,
-      hasLocation: true,
+      hasCoordinates: true,
     },
     orderBy: {
       createdAt: "desc",
@@ -93,11 +95,11 @@ export async function createListing(userId: string) {
   } else if (
     listing.hasCategory &&
     listing.hasDescription &&
-    !listing.hasLocation
+    !listing.hasCoordinates
   ) {
     redirect(`/become-a-host/${listing.id}/location`);
   } else {
-    await prisma.listing.create({
+    const listing = await prisma.listing.create({
       data: {
         hostId: userId,
       },
@@ -121,11 +123,14 @@ export async function inputCategory(formData: FormData) {
 
 export async function inputCountry(formData: FormData) {
   const country = formData.get("country") as string;
+  const coordinates = formData.get("coordinates") as string;
+  const formattedCoordinates = coordinates.split(",");
+  console.log("🚀 ~ inputCountry ~ coordinates:", formattedCoordinates);
   const listingId = formData.get("listingId") as string;
 
   const listing = await prisma.listing.update({
     where: { id: listingId },
-    data: { country, hasLocation: true },
+    data: { country, coordinates: formattedCoordinates, hasCoordinates: true },
   });
 
   redirect(`/become-a-host/${listing.id}/description`);
