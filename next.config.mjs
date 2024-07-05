@@ -12,6 +12,11 @@ const nextConfig = {
         hostname: "kxhvwvdwskxrzqheqjwo.supabase.co",
         port: "",
       },
+      {
+        protocol: "https",
+        hostname: "api.mapbox.com",
+        port: "",
+      },
     ],
   },
 };

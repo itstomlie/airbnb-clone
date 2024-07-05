@@ -8,7 +8,7 @@ import { Select } from "./ui/select";
 import ReactMapboxGl, { Layer, Feature } from "react-mapbox-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+const accessToken = process.env.MAPBOX_ACCESS_TOKEN!;
 
 export default function MapWithGeocoder() {
   const mapContainerRef = useRef();

@@ -16,7 +16,7 @@ function SkeletonCard() {
 
 const ListingLoadingPage = () => {
   return (
-    <div className="container px-5 lg:px-10 grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-5">
+    <div className="container px-5 md:px-10 grid md:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-5">
       <SkeletonCard />
       <SkeletonCard />
       <SkeletonCard />

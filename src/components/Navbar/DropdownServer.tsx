@@ -1,6 +1,6 @@
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
-import DropdownClient from "./DropdownClient";
+import DropdownClient from "./Dropdown";
 import { redirect } from "next/navigation";
 
 const DropdownServer = async () => {
@@ -8,7 +8,7 @@ const DropdownServer = async () => {
 
   const { data, error } = await supabase.auth.getUser();
 
-  return <DropdownClient user={data.user} />;
+  return;
 };
 
 export default DropdownServer;

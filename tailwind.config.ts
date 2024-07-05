@@ -54,7 +54,7 @@ const config = {
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
+        md: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
@@ -71,6 +71,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+      },
+      height: {
+        "screen-minus-nav": "calc(100vh - 5rem)", // Adjust 5rem to match your navbar height
       },
     },
   },

@@ -11,37 +11,56 @@ datasource db {
 }
 
 model Listing {
-  id          String   @id @default(cuid())
-  name        String?
-  description String?
-  category    String?
-  host        User?    @relation(fields: [hostId], references: [id])
-  hostId      String?
-  price       Float?
-  guests      Int?
-  bedrooms    Int?
-  beds        Int?
-  bathrooms   Int?
-  coordinates String[]
-  country     String?
-  images      String[]
-  hasCategory Boolean @default(false)
-  hasDescription Boolean @default(false)
-  hasCoordinates Boolean @default(false)
-  createdAt DateTime  @default(now()) @map(name: "created_at")
-  updatedAt DateTime  @updatedAt @map(name: "updated_at")
-  
+  id             String   @id @default(cuid())
+  name           String?
+  description    String?
+  category       String?
+  Host           User?    @relation(fields: [hostId], references: [id])
+  hostId         String?
+  price          Float?
+  guests         Int?
+  bedrooms       Int?
+  beds           Int?
+  bathrooms      Int?
+  coordinates    String[]
+  country        String?
+  images         String[]
+  hasCategory    Boolean  @default(false)
+  hasDescription Boolean  @default(false)
+  hasCoordinates Boolean  @default(false)
+  createdAt      DateTime @default(now()) @map(name: "created_at")
+  updatedAt      DateTime @updatedAt @map(name: "updated_at")
+
+  Reservations Reservation[]
+
   @@map(name: "listings")
 }
 
 model User {
-  id        String    @id @default(uuid())
-  firstName String?   @map(name: "first_name")
-  lastName  String?   @map(name: "last_name")
-  email     String?   @unique
-  createdAt DateTime  @default(now()) @map(name: "created_at")
-  updatedAt DateTime  @updatedAt @map(name: "updated_at")
-  posts     Listing[]
+  id           String        @id @default(uuid())
+  firstName    String?       @map(name: "first_name")
+  lastName     String?       @map(name: "last_name")
+  email        String?       @unique
+  createdAt    DateTime      @default(now()) @map(name: "created_at")
+  updatedAt    DateTime      @updatedAt @map(name: "updated_at")
+  Listings     Listing[]
+  Reservations Reservation[]
 
   @@map(name: "users")
+}
+
+model Reservation {
+  id String @id @default(uuid())
+
+  startDate DateTime
+  endDate   DateTime
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+
+  Listing   Listing? @relation(fields: [listingId], references: [id])
+  listingId String?
+  User      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+
+  @@map(name: "reservations")
 }

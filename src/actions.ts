@@ -36,20 +36,17 @@ export async function login(formData: FormData) {
         email: data.user?.email,
       },
     });
+  } else {
+    const { error } = await supabase.auth.signInWithPassword(form);
 
-    revalidatePath("/", "layout");
-    redirect("/");
-  }
-
-  const { error } = await supabase.auth.signInWithPassword(form);
-
-  if (error) {
-    console.log(error);
-    redirect("/error");
+    if (error) {
+      console.log(error);
+      redirect("/error");
+    }
   }
 
   revalidatePath("/", "layout");
-  redirect("/");
+  return redirect("/");
 }
 
 export async function getListings(search: string | null) {
@@ -59,6 +56,22 @@ export async function getListings(search: string | null) {
   });
 
   return listings;
+}
+
+export async function getOneListing(id: string) {
+  const listing = await prisma.listing.findUnique({
+    where: { id },
+    include: {
+      Reservations: {
+        where: {
+          listingId: id,
+        },
+      },
+      Host: true,
+    },
+  });
+
+  return listing;
 }
 
 export async function createListing(userId: string) {
@@ -105,7 +118,7 @@ export async function createListing(userId: string) {
       },
     });
 
-    redirect(`/become-a-host/${listing.id}/structure`);
+    return redirect(`/become-a-host/${listing.id}/structure`);
   }
 }
 
@@ -118,14 +131,13 @@ export async function inputCategory(formData: FormData) {
     data: { category, hasCategory: true },
   });
 
-  redirect(`/become-a-host/${listing.id}/location`);
+  return redirect(`/become-a-host/${listing.id}/location`);
 }
 
 export async function inputCountry(formData: FormData) {
   const country = formData.get("country") as string;
   const coordinates = formData.get("coordinates") as string;
   const formattedCoordinates = coordinates.split(",");
-  console.log("🚀 ~ inputCountry ~ coordinates:", formattedCoordinates);
   const listingId = formData.get("listingId") as string;
 
   const listing = await prisma.listing.update({
@@ -133,7 +145,7 @@ export async function inputCountry(formData: FormData) {
     data: { country, coordinates: formattedCoordinates, hasCoordinates: true },
   });
 
-  redirect(`/become-a-host/${listing.id}/description`);
+  return redirect(`/become-a-host/${listing.id}/description`);
 }
 
 export async function inputDescription({
@@ -172,5 +184,23 @@ export async function inputDescription({
     },
   });
 
-  redirect(`/`);
+  return redirect(`/`);
+}
+
+export async function createReservation(formData: FormData) {
+  const userId = formData.get("userId") as string;
+  const listingId = formData.get("listingId") as string;
+  const startDate = formData.get("startDate") as string;
+  const endDate = formData.get("endDate") as string;
+
+  const data = await prisma.reservation.create({
+    data: {
+      userId,
+      listingId,
+      startDate,
+      endDate,
+    },
+  });
+
+  return redirect("/");
 }

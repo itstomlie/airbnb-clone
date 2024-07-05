@@ -8,11 +8,13 @@ import { createClient } from "@/utils/supabase/client";
 
 import SocialLogo from "social-logos";
 import { useState } from "react";
+import { useFormStatus } from "react-dom";
 
 function Modal() {
   const searchParams = useSearchParams();
   const modal = searchParams.get("modal");
   const pathname = usePathname();
+  const { pending } = useFormStatus();
 
   const [useEmail, setUseEmail] = useState(true);
 

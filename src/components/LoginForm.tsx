@@ -24,6 +24,8 @@ import { Input } from "@/components/ui/input";
 
 import { getCountryDataList, getEmojiFlag } from "countries-list";
 import { login } from "@/actions";
+import { useFormStatus } from "react-dom";
+import { Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   username: z
@@ -62,6 +64,9 @@ export default function LoginForm({ useEmail }: { useEmail: boolean }) {
   }
 
   const countries = getCountryDataList();
+
+  const { pending } = useFormStatus();
+
   return (
     <Form {...form}>
       <form action={login} className="space-y-3">
@@ -145,7 +150,7 @@ export default function LoginForm({ useEmail }: { useEmail: boolean }) {
         )}
 
         <Button type="submit" className="w-full">
-          Continue
+          {pending ? <Loader2 className="animate-spin" /> : "Continue"}
         </Button>
       </form>
     </Form>

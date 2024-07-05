@@ -12,21 +12,29 @@ const CategoryFilter = () => {
   const pathName = usePathname();
 
   const createQueryString = useCallback(
-    (name: string, value: string) => {
+    (name, value) => {
       const params = new URLSearchParams(searchParams.toString());
 
-      params.set(name, value);
+      if (params.get(name) === value) {
+        params.delete(name); // Remove the filter if it matches the current value
+      } else {
+        params.set(name, value); // Set the filter if it doesn't match
+      }
 
       return params.toString();
     },
     [searchParams]
   );
-
   return (
-    <div className=" mx-5 lg:mx-24 py-5 flex gap-x-12 overflow-scroll ">
+    <div className="mx-5 md:mx-12 lg:mx-24 py-5 flex gap-x-12 overflow-scroll ">
       {categories.map((item) => (
         <Link
-          href={pathName + "?" + createQueryString("filter", item.name)}
+          //if current category is selected, clicking it again will remove the filter
+          href={
+            pathName.includes(item.name)
+              ? `${pathName}?${createQueryString("filter", "")}` // Remove filter
+              : `${pathName}?${createQueryString("filter", item.name)}` // Add filter
+          }
           key={item.name}
           className={`flex flex-col justify-center items-center border-black text-secondary pb-2 gap-y-2 cursor-pointer group hover:text-black hover:border-b-2 hover:border-opacity-10 ${
             search === item.name

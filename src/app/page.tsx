@@ -3,7 +3,7 @@ import ListingLoadingPage from "@/components/ListingLoadingPage";
 import Listings from "@/components/listing/Listings";
 import { Suspense } from "react";
 
-export default async function Home({
+export default function Home({
   searchParams,
 }: {
   searchParams?: { filter: string };

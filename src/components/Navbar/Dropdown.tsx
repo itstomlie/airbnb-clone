@@ -1,3 +1,4 @@
+// Dropdown.tsx
 "use client";
 
 import React from "react";
@@ -5,20 +6,19 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Menu, User } from "lucide-react";
-import { createClient } from "@/utils/supabase/client";
-import { redirect, usePathname, useSearchParams } from "next/navigation";
+import { Menu, UserIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
-import Modal from "../LoginModal";
 import { createListing } from "@/actions";
+import { createClient } from "@/utils/supabase/client";
+import { User } from "@supabase/supabase-js";
 
-const DropdownClient = ({ user }: { user: any }) => {
-  const supabase = createClient();
+const Dropdown = ({ user }: { user: User | null }) => {
   const pathname = usePathname();
+  const supabase = createClient();
 
   async function signOut() {
     const { error } = await supabase.auth.signOut();
@@ -36,8 +36,10 @@ const DropdownClient = ({ user }: { user: any }) => {
       <DropdownMenuTrigger className="outline-none">
         <div className="flex justify-center items-center border rounded-full p-1 px-2 gap-x-3">
           <Menu />
-          <div className="rounded-full p-2 bg-black">
-            <User color="white" />
+          <div
+            className={`rounded-full p-2 ${user ? "bg-primary" : "bg-black"}`}
+          >
+            <UserIcon color="white" />
           </div>
         </div>
       </DropdownMenuTrigger>
@@ -59,11 +61,11 @@ const DropdownClient = ({ user }: { user: any }) => {
           </>
         ) : (
           <>
-            <DropdownMenuItem>
-              <form action={createListingWithUserId}>
-                <button type="submit">Airbnb your home</button>
-              </form>
-            </DropdownMenuItem>
+            <Link href={`${pathname}/?modal=true`}>
+              <DropdownMenuItem className="font-medium">
+                Airbnb your home
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuSeparator />
 
             <Link href={`${pathname}/?modal=true`}>
@@ -81,4 +83,4 @@ const DropdownClient = ({ user }: { user: any }) => {
   );
 };
 
-export default DropdownClient;
+export default Dropdown;
