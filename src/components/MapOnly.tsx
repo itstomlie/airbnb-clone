@@ -1,3 +1,4 @@
+//@ts-nocheck
 "use client";
 
 import React, { useEffect, useRef } from "react";
@@ -5,7 +6,11 @@ import mapboxgl from "mapbox-gl";
 
 import "mapbox-gl/dist/mapbox-gl.css";
 
-const MapboxExample = ({ coordinates }) => {
+const MapboxExample = ({
+  coordinates,
+}: {
+  coordinates: string[] | undefined;
+}) => {
   const mapContainerRef = useRef();
   const mapRef = useRef();
 

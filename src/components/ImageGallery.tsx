@@ -1,10 +1,10 @@
 import Image from "next/image";
 
-const ImageGallery = ({ images }) => {
+const ImageGallery = ({ images }: { images: string[] | undefined }) => {
   return (
     <div className="h-[50vh]">
       <div className="grid grid-cols-4 gap-2 h-full w-full">
-        {images.map((url, index) => (
+        {images?.map((url, index) => (
           <div
             key={url}
             className={`

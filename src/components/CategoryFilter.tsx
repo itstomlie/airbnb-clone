@@ -12,7 +12,7 @@ const CategoryFilter = () => {
   const pathName = usePathname();
 
   const createQueryString = useCallback(
-    (name, value) => {
+    (name: any, value: any) => {
       const params = new URLSearchParams(searchParams.toString());
 
       if (params.get(name) === value) {

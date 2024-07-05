@@ -29,7 +29,7 @@ const Dropdown = ({ user }: { user: User | null }) => {
     }
   }
 
-  const createListingWithUserId = createListing.bind(null, user?.id);
+  const createListingWithUserId = createListing.bind(null, user?.id!);
 
   return (
     <DropdownMenu>

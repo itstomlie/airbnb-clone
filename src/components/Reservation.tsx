@@ -13,6 +13,15 @@ import { eachDayOfInterval } from "date-fns";
 import { useFormStatus } from "react-dom";
 import { Loader2 } from "lucide-react";
 
+type Reservation = {
+  id: string;
+  startDate: Date;
+  endDate: Date;
+  createdAt: Date;
+  listingId: string | null;
+  userId: string | null;
+};
+
 const Reservation = ({ user, reservations, price }: any) => {
   const { pending } = useFormStatus();
 
@@ -25,7 +34,7 @@ const Reservation = ({ user, reservations, price }: any) => {
   ]);
 
   let disabledDates: Date[] = [];
-  reservations.forEach((reservation) => {
+  reservations.forEach((reservation: Reservation) => {
     const dateRange = eachDayOfInterval({
       start: new Date(reservation.startDate),
       end: new Date(reservation.endDate),
@@ -60,6 +69,7 @@ const Reservation = ({ user, reservations, price }: any) => {
         disabledDates={disabledDates}
         weekStartsOn={1}
         className="w-full"
+        //@ts-ignore
         style={{ width: "100%" }}
       />
 
