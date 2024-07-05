@@ -10,7 +10,9 @@ export default function Home({
 }) {
   return (
     <main>
-      <CategoryFilter />
+      <Suspense>
+        <CategoryFilter />
+      </Suspense>
       <Suspense key={searchParams?.filter} fallback={<ListingLoadingPage />}>
         <Listings searchParams={searchParams} />
       </Suspense>

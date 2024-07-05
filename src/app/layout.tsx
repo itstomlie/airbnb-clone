@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import Modal from "@/components/LoginModal";
-import NavbarWrapper from "../components/navbar/NavbarWrapper";
+import NavbarWrapper from "@/components/navbar/NavbarWrapper";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} mb-12`}>
         <NavbarWrapper />
-        <Modal />
+        <Suspense>
+          <Modal />
+        </Suspense>
         {children}
       </body>
     </html>

@@ -1,11 +1,26 @@
-import { createClient } from "@/utils/supabase/server";
-import Navbar from "./Navbar";
+"use client";
 
-const NavbarWrapper = async () => {
+import { useState, useEffect } from "react";
+import { createClient } from "@/utils/supabase/client";
+import Navbar from "./Navbar";
+import { User } from "@supabase/supabase-js";
+
+const NavbarWrapper = () => {
+  const [user, setUser] = useState<null | User>(null);
   const supabase = createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setUser(user);
+      }
+    };
+    getUser();
+  }, []);
 
   return <Navbar user={user} />;
 };
