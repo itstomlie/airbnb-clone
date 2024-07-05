@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
-import Navbar from "./Navbar";
 import { User } from "@supabase/supabase-js";
+import Navbar from "./Navbar";
 
 const NavbarWrapper = () => {
   const [user, setUser] = useState<null | User>(null);
