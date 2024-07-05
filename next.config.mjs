@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/airbnb-clone",
   images: {
     remotePatterns: [
       {
