@@ -4,11 +4,10 @@ import { Dot, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 import Link from "next/link";
-import Dropdown from "./Dropdown";
 import { usePathname } from "next/navigation";
-import { User } from "@supabase/supabase-js";
+import Dropdown from "./Dropdown";
 
-const Navbar = ({ user }: { user: User | null }) => {
+const Navbar = ({ user }: { user: any }) => {
   const pathname = usePathname();
   const isRoot = pathname === "/";
 
@@ -63,7 +62,7 @@ const Navbar = ({ user }: { user: User | null }) => {
           <SearchIcon color="white" />
         </div>
       </div>
-      <Dropdown user={user} />
+      <Dropdown pathname={pathname} user={user} />
     </div>
   );
 

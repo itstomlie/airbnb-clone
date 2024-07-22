@@ -6,15 +6,13 @@ import { createClient } from "@/utils/supabase/server";
 
 import prisma from "./lib/prisma";
 
-export async function login(formData: FormData) {
+export async function login(form: {
+  email: string;
+  password: string;
+  phone: string;
+  countryCode: string;
+}) {
   const supabase = createClient();
-
-  // type-casting here for convenience
-  // in practice, you should validate your inputs
-  const form = {
-    email: formData.get("email") as string,
-    password: formData.get("password") as string,
-  };
 
   const user = await prisma.user.findFirst({
     where: {
@@ -51,7 +49,12 @@ export async function login(formData: FormData) {
 
 export async function getListings(search: string | null) {
   const listings = await prisma.listing.findMany({
-    where: { category: search || undefined },
+    where: {
+      category: search || undefined,
+      hasCategory: true,
+      hasCoordinates: true,
+      hasDescription: true,
+    },
     orderBy: { createdAt: "desc" },
   });
 

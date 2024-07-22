@@ -1,4 +1,3 @@
-// Dropdown.tsx
 "use client";
 
 import React from "react";
@@ -10,14 +9,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Menu, UserIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { createListing } from "@/actions";
 import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
 
-const Dropdown = ({ user }: { user: User | null }) => {
-  const pathname = usePathname();
+const Dropdown = ({ pathname, user }: { pathname: string; user: any }) => {
   const supabase = createClient();
 
   async function signOut() {

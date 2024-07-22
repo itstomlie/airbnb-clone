@@ -1,17 +1,12 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
+import { useState } from "react";
+import { getCountryDataList, getEmojiFlag, TCountryCode } from "countries-list";
+import { LucideLoader2 } from "lucide-react";
+import { login } from "@/actions";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-} from "@/components/ui/form";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -20,139 +15,125 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-import { Input } from "@/components/ui/input";
-
-import { getCountryDataList, getEmojiFlag } from "countries-list";
-import { login } from "@/actions";
-import { useFormStatus } from "react-dom";
-import { Loader2 } from "lucide-react";
-
-const formSchema = z.object({
-  username: z
-    .string()
-    .min(2, {
-      message: "Username must be at least 2 characters.",
-    })
-    .optional(),
-  phone: z
-    .string()
-    .min(2, {
-      message: "phone must be at least 2 characters.",
-    })
-    .optional(),
-  email: z.string().email().optional(),
-  password: z.string().optional(),
-  countryCode: z.string().optional(),
-});
+const countries = getCountryDataList();
 
 export default function LoginForm({ useEmail }: { useEmail: boolean }) {
-  // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      username: "",
-      phone: "",
-      email: "",
-    },
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    phone: "",
+    countryCode: "ID",
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values);
-  }
+  const [loading, setLoading] = useState(false);
 
-  const countries = getCountryDataList();
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((prevForm) => ({
+      ...prevForm,
+      [name]: value,
+    }));
+  };
 
-  const { pending } = useFormStatus();
+  const handleCountryCodeChange = (value: string) => {
+    setForm((prevForm) => ({
+      ...prevForm,
+      countryCode: value,
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    setLoading(true);
+    await login(form);
+    setLoading(false);
+  };
 
   return (
-    <Form {...form}>
-      <form action={login} className="space-y-3">
-        {useEmail ? (
-          <>
-            <FormField
-              control={form.control}
+    <form onSubmit={handleSubmit} className="space-y-3">
+      {useEmail ? (
+        <>
+          <div>
+            <Label htmlFor="email">Email</Label>
+            <Input
+              type="email"
+              id="email"
               name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-
-                  <FormControl>
-                    <Input placeholder="itsTomLie@gmail.com" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
+              placeholder="itsTomLie@gmail.com"
+              value={form.email}
+              onChange={handleChange}
             />
-            <FormField
-              control={form.control}
+          </div>
+          <div>
+            <Label htmlFor="password">Password</Label>
+            <Input
+              type="password"
+              id="password"
               name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Password</FormLabel>
-
-                  <FormControl>
-                    <Input {...field} type="password" />
-                  </FormControl>
-                </FormItem>
-              )}
+              value={form.password}
+              onChange={handleChange}
             />
-          </>
-        ) : (
-          <>
-            <FormField
-              control={form.control}
-              name="countryCode"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Country Code</FormLabel>
-                  <FormControl>
-                    <Select>
-                      <SelectTrigger className="w-full">
-                        <SelectValue
-                          placeholder={`${getEmojiFlag("ID")} Indonesia (+62)`}
-                        />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {countries.map((country) => (
-                          <SelectItem key={country.name} value={country.name}>
-                            {`${getEmojiFlag(country.iso2)}
-                          ${country.name} (+${country.phone})`}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <Label htmlFor="countryCode">Country Code</Label>
+            <Select
+              value={form.countryCode}
+              onValueChange={handleCountryCodeChange}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue
+                  placeholder={`${getEmojiFlag(
+                    form.countryCode as TCountryCode
+                  )} ${
+                    countries.find(
+                      (country) => country.iso2 === form.countryCode
+                    )?.name
+                  } (+${
+                    countries.find(
+                      (country) => country.iso2 === form.countryCode
+                    )?.phone
+                  })`}
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {countries.map((country) => (
+                  <SelectItem key={country.iso2} value={country.iso2}>
+                    {`${getEmojiFlag(country.iso2)} ${country.name} (+${
+                      country.phone
+                    })`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          <div>
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              type="text"
+              id="phone"
               name="phone"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Phone Number</FormLabel>
-
-                  <FormControl>
-                    <Input placeholder="82723513230" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
+              placeholder="82723513230"
+              value={form.phone}
+              onChange={handleChange}
             />
-            <p className="text-xs">
-              We&apos;ll call or text you to confirm your number. Standard
-              message and data rates apply.{" "}
-              <span className="underline font-medium">Privacy Policy</span>
-            </p>
-          </>
-        )}
+          </div>
+          <p className="text-xs">
+            We&apos;ll call or text you to confirm your number. Standard message
+            and data rates apply.{" "}
+            <span className="underline font-medium">Privacy Policy</span>
+          </p>
+        </>
+      )}
 
-        <Button type="submit" className="w-full">
-          {pending ? <Loader2 className="animate-spin" /> : "Continue"}
-        </Button>
-      </form>
-    </Form>
+      <Button type="submit" className="w-full">
+        {loading ? <LucideLoader2 className="animate-spin" /> : "Continue"}
+      </Button>
+    </form>
   );
 }
