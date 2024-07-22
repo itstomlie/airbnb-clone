@@ -10,6 +10,7 @@ This is an Airbnb Clone created from scratch using Next.js. This Project is host
 
 - Wishlist
 - Google Authentication
+- Phone Authentication
 - Listing & Destination Search
 - Internationalization
 
@@ -37,3 +38,9 @@ bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+> Feel free to:
+> - Register using **email** authentication
+> - Create a new listing
+> - Make your reservations
+
