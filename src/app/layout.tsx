@@ -4,7 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import Modal from "@/components/LoginModal";
 import { createClient } from "@/utils/supabase/server";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/Navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,7 +25,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} mb-12`}>
-        <NavbarComponent user={user} />
+        <Navbar user={user} />
         <Suspense fallback={<div>Loading...</div>}>
           <Modal />
         </Suspense>
