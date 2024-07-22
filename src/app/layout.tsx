@@ -2,9 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
-import Navbar from "@/components/navbar/Navbar";
+
 import Modal from "@/components/LoginModal";
 import { createClient } from "@/utils/supabase/server";
+import Navbar from "@/components/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
