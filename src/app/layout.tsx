@@ -4,7 +4,7 @@ import "./globals.css";
 import { Suspense } from "react";
 import Modal from "@/components/LoginModal";
 import { createClient } from "@/utils/supabase/server";
-import NavbarComponent from "@/components/navbar/NavbarComponent";
+import Navbar from "@/components/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
