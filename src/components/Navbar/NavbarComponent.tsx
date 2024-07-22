@@ -7,7 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Dropdown from "./Dropdown";
 
-const Navbar = ({ user }: { user: any }) => {
+const NavbarComponent = ({ user }: { user: any }) => {
   const pathname = usePathname();
   const isRoot = pathname === "/";
 
@@ -74,4 +74,4 @@ const Navbar = ({ user }: { user: any }) => {
   );
 };
 
-export default Navbar;
+export default NavbarComponent;
