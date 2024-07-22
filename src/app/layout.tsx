@@ -5,6 +5,7 @@ import { Suspense } from "react";
 import Modal from "@/components/LoginModal";
 import { createClient } from "@/utils/supabase/server";
 import Navbar from "@/components/Navbar/Navbar";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
